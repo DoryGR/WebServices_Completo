@@ -12,6 +12,8 @@ import br.edu.ifgoias.academico.repositories.CursoRepository;
 
 @Service
 public class CursoService {
+
+	
 	
 	@Autowired
 	private CursoRepository cursoRep;
@@ -19,6 +21,10 @@ public class CursoService {
 	public List<Curso> findAll(){
 		return cursoRep.findAll();
 	}
+	
+    public CursoService(CursoRepository cursoRep) {
+        this.cursoRep = cursoRep;
+    }
 	
 	public Curso findById(Integer id) {
 		return cursoRep.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND) );	
