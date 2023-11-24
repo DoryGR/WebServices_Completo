@@ -11,7 +11,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:14  # versão desejada do PostgreSQL
+        image: postgres:16  # versão desejada do PostgreSQL
         env:
           POSTGRES_DB: jdbc  # nome do banco de dados
           POSTGRES_USER: postgres  # nome de usuário
