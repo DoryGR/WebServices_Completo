@@ -1,0 +1,29 @@
+name: Testar Conexão PostgreSQL
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  testar-conexao-postgresql:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: aluno
+          POSTGRES_DB: jdbc
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - name: Checkout do Código
+      uses: actions/checkout@v2
+
+    - name: Testar Conexão
+      run: |
+        PGPASSWORD=aluno psql -h localhost -U postgres -d jdbc -c "SELECT 1;"

@@ -58,3 +58,5 @@ public class AlunoServiceTest {
         assertThrows(ResponseStatusException.class, () -> alunoService.findById(alunoId));
     }
 }
+
+
