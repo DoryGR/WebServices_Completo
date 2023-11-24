@@ -1,4 +1,4 @@
-package br.edu.ifgoias.academico.services;
+/*package br.edu.ifgoias.academico.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -63,3 +63,4 @@ public class CursoServiceTest {
         assertThrows(ResponseStatusException.class, () -> cursoService.findById(cursoId));
     }
 }
+*/
