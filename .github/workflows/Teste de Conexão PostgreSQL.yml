@@ -28,4 +28,4 @@ jobs:
 
     - name: Testar conexão
       run: |
-        psql -h localhost -U postgres -d SYSACAD -c "SELECT version();"
+        PGPASSWORD=aluno psql -h localhost -U postgres -d SYSACAD -c "SELECT version();"
