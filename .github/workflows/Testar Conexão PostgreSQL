@@ -1,0 +1,24 @@
+name: Testar Conexão PostgreSQL
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  testar-conexao-postgresql:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do Código
+      uses: actions/checkout@v2
+
+    - name: Set up PostgreSQL
+      uses: postgresql/setup-postgres@v2
+      with:
+        postgresql-version: '13'
+        database-url: 'postgres://postgres:senha@localhost:5432/seu_banco_de_dados'
+
+    - name: Testar Conexão
+      run: |
+        psql -h localhost -U postgres -d seu_banco_de_dados -c "SELECT 1;"
