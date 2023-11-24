@@ -28,5 +28,5 @@ jobs:
 
     - name: Testar conexão
       run: |
-        PGPASSWORD=aluno psql -h localhost -U postgres -d SYSACAD -c "SELECT idCurso FROM esquema_cursos.curso;"
+        PGPASSWORD=aluno psql -h localhost -U postgres -d SYSACAD -c "SELECT idCurso FROM public.curso;"
 
