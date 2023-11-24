@@ -11,11 +11,11 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: senha
-          POSTGRES_DB: seu_banco_de_dados
+          POSTGRES_PASSWORD: aluno
+          POSTGRES_DB: jdbc
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -26,4 +26,4 @@ jobs:
 
     - name: Testar Conexão
       run: |
-        psql -h localhost -U postgres -d seu_banco_de_dados -c "SELECT 1;"
+        PGPASSWORD=aluno psql -h localhost -U postgres -d jdbc -c "SELECT 1;"
