@@ -26,5 +26,5 @@ jobs:
 
     - name: Testar Conexão
       run: |
-        PGPASSWORD=aluno psql -h localhost -U postgres -d jdbc -c "SELECT 1;"
+        PGPASSWORD=aluno psql -h localhost -U postgres -d jdbc -c "SELECT * FROM aluno;"
 
