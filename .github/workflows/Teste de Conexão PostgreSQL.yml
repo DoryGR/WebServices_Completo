@@ -1,0 +1,24 @@
+name: Teste de Conexão PostgreSQL
+
+on:
+  push:
+    branches:
+      - main  # altere para a branch desejada
+
+jobs:
+  testar-conexao:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v2
+
+    - name: Configurar ambiente PostgreSQL
+      uses: actions/setup-postgres@v1
+      with:
+        postgres-version: '14'  # altere para a versão desejada do PostgreSQL
+
+    - name: Testar conexão
+      run: |
+        psql -h localhost -U postgre -d SYSACAD -c "SELECT version();"
+        # Substitua <host>, <usuario>, <nome_do_banco> com as suas informações de conexão
