@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: aluno
-          POSTGRES_DB: jdbc
+          POSTGRES_DB: SYSACAD
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -26,5 +26,5 @@ jobs:
 
     - name: Testar Conexão
       run: |
-        PGPASSWORD=aluno psql -h localhost -U postgres -d jdbc -c "select nome from aluno;"
+        PGPASSWORD=aluno psql -h localhost -U postgres -d SYSACAD -c "select nome from aluno;"
 
