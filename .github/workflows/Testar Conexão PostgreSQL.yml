@@ -1,0 +1,29 @@
+name: Testar Conexão PostgreSQL
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  testar-conexao-postgresql:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: senha
+          POSTGRES_DB: seu_banco_de_dados
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - name: Checkout do Código
+      uses: actions/checkout@v2
+
+    - name: Testar Conexão
+      run: |
+        psql -h localhost -U postgres -d seu_banco_de_dados -c "SELECT 1;"
