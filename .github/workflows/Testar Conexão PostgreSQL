@@ -16,9 +16,9 @@ jobs:
     - name: Set up PostgreSQL
       uses: postgresql/setup-postgres@v2
       with:
-        postgresql-version: '13'
-        database-url: 'postgres://postgres:senha@localhost:5432/seu_banco_de_dados'
+        postgresql-version: '14'
+        database-url: 'postgres://postgres:senha@localhost:5432/jdbc'
 
     - name: Testar Conexão
       run: |
-        psql -h localhost -U postgres -d seu_banco_de_dados -c "SELECT 1;"
+        psql -h localhost -U postgres -d jdbc -c "SELECT *;"
