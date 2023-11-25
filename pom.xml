@@ -68,7 +68,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-          				<sonar.projectKey>${sonar.projectKey}</sonar.projectKey>
+          				<sonar.projectKey>matheusribeiro02_WebServices_Completo</sonar.projectKey>
         			</configuration>
 			</plugin>
 			<plugin>
