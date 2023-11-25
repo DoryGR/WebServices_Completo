@@ -2,17 +2,16 @@ package br.edu.ifgoias.academico.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class Config implements CommandLineRunner {
 
 	
 	@Override
 	public void run(String... args) throws Exception {
-		
-		// Curso c1 = new Curso(null,"Teste1");
 
-				// Curso c2 = new Curso(null,"Teste2");
+		// Aluno a1 = new Aluno(null, "josa", null, null);
+
+		// Curso c2 = new Curso(null,"Teste2");
 
 				// cursoRep.save(c1);
 
@@ -22,13 +21,13 @@ public class Config implements CommandLineRunner {
 
 				// cursoRep.deleteById(8);
 
-				//System.out.println("Qtde Cursos: " + cursoRep.count());
+				// System.out.println("Qtde Cursos: " + a1);
 
 				//Aluno a1 = new Aluno(null, "Caroline", "Feminino", Date.valueOf("2000-04-24"));
 
 				//Aluno a2 = new Aluno(null, "Isabelle", "Feminino", Date.valueOf("2000-12-28"));
 
-				//alunoRep.save(a1);
+				// AlunoResource.save(a1);
 
 				//alunoRep.save(a2);
 
