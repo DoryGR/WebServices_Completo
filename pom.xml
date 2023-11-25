@@ -67,6 +67,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+          				<sonar.projectKey>${sonar.projectKey}</sonar.projectKey>
+        			</configuration>
 			</plugin>
 			<plugin>
                 <groupId>org.jacoco</groupId>
