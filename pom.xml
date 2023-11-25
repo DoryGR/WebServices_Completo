@@ -17,7 +17,7 @@
 		<java.version>17</java.version>
 		<sonar.organization>matheusribeiro02</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>${sonar.projectKey}</sonar.projectKey>
+		<sonar.projectKey>matheusribeiro02_WebServices_Completo</sonar.projectKey>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -69,7 +69,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-          				<sonar.projectKey>${sonar.projectKey}</sonar.projectKey>
+          				<sonar.projectKey>matheusribeiro02_WebServices_Completo</sonar.projectKey>
         			</configuration>
 			</plugin>
 			<plugin>
