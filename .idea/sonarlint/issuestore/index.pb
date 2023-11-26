@@ -57,3 +57,7 @@ Q.idea/sonarlint/securityhotspotstore/8/2/8225e7d489e2fc1fc03bb19f29f557a12d9961
 Q.idea/sonarlint/securityhotspotstore/f/8/f83cf83b2758abffa7cae09f7504961efde914b1,6\9\690826e3e82ade0c45a806f562bfb508bef5a9dc
 w
 G.idea/sonarlint/issuestore/8/d/8dc446bab9d4ea40a9a28a3251fdb353bd19a08f,c\7\c765e2abc0902a3afbb399e201e86214a5e20f8c
+j
+:src/main/java/br/edu/ifgoias/academico/entities/Curso.java,8\2\82d65722b2727f70c26d6dc341c733ea94a7ccde
+u
+Esrc/test/java/br/edu/ifgoias/academico/services/AlunoServiceTest.java,2\6\26dca80af3abdfc1b9733d362e8636e5816b1a30

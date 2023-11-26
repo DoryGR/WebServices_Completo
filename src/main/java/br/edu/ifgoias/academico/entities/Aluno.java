@@ -95,17 +95,16 @@ public class Aluno implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Aluno other = (Aluno) obj;
-		return Objects.equals(dt_nasc, other.dt_nasc) && Objects.equals(idaluno, other.idaluno)
-				&& Objects.equals(nome, other.nome) && Objects.equals(sexo, other.sexo);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Aluno aluno = (Aluno) o;
+		return Objects.equals(idaluno, aluno.idaluno) &&
+				Objects.equals(nome, aluno.nome) &&
+				Objects.equals(sexo, aluno.sexo) &&
+				Objects.equals(dt_nasc, aluno.dt_nasc);
 	}
+
 
 	@Override
 	public String toString() {

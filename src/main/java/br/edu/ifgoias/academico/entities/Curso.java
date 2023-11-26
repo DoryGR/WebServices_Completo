@@ -3,6 +3,7 @@ package br.edu.ifgoias.academico.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -69,6 +70,20 @@ public class Curso implements Serializable {
 			this.removeAluno(a);
 			a.setCurso(null);
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Curso curso = (Curso) o;
+		return Objects.equals(idcurso, curso.idcurso) &&
+				Objects.equals(nomecurso, curso.nomecurso);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(idcurso, nomecurso);
 	}
 
 	@Override
