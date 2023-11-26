@@ -52,16 +52,15 @@ public class CursoResource {
 		
 		return ResponseEntity.ok().body(c);
 		
-	} 
-	
-	@DeleteMapping (value = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> delete(@PathVariable Integer id){
-		
-		servico.delete(id);
+	}
 
-        return null;
-    }
+	@DeleteMapping(value = "/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		servico.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
 	
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.OK)

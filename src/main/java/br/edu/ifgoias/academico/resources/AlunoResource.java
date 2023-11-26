@@ -57,11 +57,10 @@ public class AlunoResource {
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-
 		servico.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 
-        return null;
-    }
 
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.OK)

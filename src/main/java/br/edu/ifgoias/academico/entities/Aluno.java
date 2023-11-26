@@ -112,4 +112,5 @@ public class Aluno implements Serializable {
 		return "Aluno [idaluno=" + idaluno + ", nome=" + nome + ", sexo=" + sexo + ", dt_nasc=" + dt_nasc + "]";
 	}
 
+
 }
