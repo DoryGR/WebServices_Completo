@@ -1,6 +1,7 @@
 package br.edu.ifgoias.academico.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class Aluno implements Serializable {
 	private String sexo;
 
 	@Column(name = "dt_nasc", nullable = false)
-	private Date dt_nasc;
+	private LocalDate dt_nasc;
 
 	@ManyToOne
 	@JoinColumn(name = "idcurso")
@@ -38,14 +39,17 @@ public class Aluno implements Serializable {
 
 	}
 
-	public Aluno(Integer id, String nome, String sexo, Date date) {
+	public Aluno(Integer id, String nome, String sexo, LocalDate of) {
 		this.idaluno = id;
 		this.nome = nome;
 		this.sexo = sexo;
-		this.dt_nasc = date;
+		this.dt_nasc = of;
 	}
 
-	public Integer getIdaluno() {
+    public Aluno(int id, String joão, String masculino, LocalDate of) {
+    }
+
+    public Integer getIdaluno() {
 		return idaluno;
 	}
 
@@ -69,11 +73,11 @@ public class Aluno implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public Date getDt_nasc() {
+	public LocalDate getDt_nasc() {
 		return dt_nasc;
 	}
 
-	public void setDt_nasc(Date dt_nasc) {
+	public void setDt_nasc(LocalDate dt_nasc) {
 		this.dt_nasc = dt_nasc;
 	}
 

@@ -56,11 +56,12 @@ public class CursoResource {
 	
 	@DeleteMapping (value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Integer id){
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		
 		servico.delete(id);
-	
-	}
+
+        return null;
+    }
 	
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.OK)
