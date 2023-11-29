@@ -30,7 +30,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven and analyze with SonarCloud
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=matheusribeiro02_WebServices_Completo -Dsonar.organization=matheusribeiro02 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=matheusribeiro02_WebServices_Completo -Dsonar.organization=matheusribeiro02 -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
