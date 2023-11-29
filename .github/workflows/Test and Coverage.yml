@@ -1,6 +1,9 @@
 name: Test and Coverage
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types:
       - opened
@@ -9,8 +12,6 @@ on:
       - edited
     branches:
       - main
-      - develop
-      - master
 
 jobs:
   build:
