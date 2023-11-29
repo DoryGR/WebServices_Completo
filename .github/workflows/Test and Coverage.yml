@@ -2,6 +2,8 @@ name: Test and Coverage
 
 on:
   push:
+    branches:
+      - main
   pull_request:
     types:
       - opened
@@ -26,21 +28,18 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn -B test
+        run: mvn -B verify
 
-      - name: Generate JaCoCo Badge
-        id: jacoco
-        uses: cicirello/jacoco-badge-generator@v2
-
-      - name: Log coverage percentage
-        run: |
-          echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
-          echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Fail if coverage is below 50%
         run: |
-          coverage=${{ steps.jacoco.outputs.coverage }}
-          if (( $(echo "$coverage < 0.50" |bc -l) )); then
+          coverage=$(curl -s https://sonarcloud.io/api/measures/component?componentKey=your_project_key&metricKeys=coverage | jq -r '.component.measures[0].value')
+          if (( $(echo "$coverage < 50.0" |bc -l) )); then
             echo "Test coverage is below 50%!"
             exit 1
           fi
