@@ -36,7 +36,7 @@ jobs:
 
       - name: Fail if coverage is below 50%
         run: |
-          coverage=$(curl -s https://sonarcloud.io/api/measures/component?componentKey=your_project_key&metricKeys=coverage | jq -r '.component.measures[0].value')
+          coverage=$(curl -s https://sonarcloud.io/api/measures/component?componentKey=matheusribeiro02_WebServices_Completo&metricKeys=coverage | jq -r '.component.measures[0].value')
           if (( $(echo "$coverage < 50.0" |bc -l) )); then
             echo "Test coverage is below 50%!"
             exit 1
