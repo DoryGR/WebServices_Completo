@@ -1,8 +1,6 @@
 package br.edu.ifgoias.academico.entities;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CursoTest {
