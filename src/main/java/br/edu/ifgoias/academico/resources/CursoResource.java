@@ -25,12 +25,12 @@ import br.edu.ifgoias.academico.services.CursoService;
 public class CursoResource {
 	
 	@Autowired
-	private CursoService servico;
+	private CursoService cursoService;
 	
 	@GetMapping
 	public ResponseEntity< List<Curso> >  findAll(){
 		
-		List<Curso> cursos = servico.findAll();
+		List<Curso> cursos = cursoService.findAll();
 		
 		return ResponseEntity.ok().body(cursos);
 		
@@ -39,25 +39,22 @@ public class CursoResource {
 	@GetMapping (value = "/{id}")
 	public ResponseEntity<Curso> findById(@PathVariable Integer id){
 		
-		Curso curso = servico.findById(id);
+		Curso curso = cursoService.findById(id);
 		
 		return ResponseEntity.ok().body(curso);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Curso> insert(@RequestBody Curso c){
-		
-		 c = servico.insert(c);
-		
-		return ResponseEntity.ok().body(c);
-		
+	public ResponseEntity<Curso> insert(@RequestBody Curso curso) {
+		Curso createdCurso = cursoService.insert(curso);
+		return new ResponseEntity<>(createdCurso, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		servico.delete(id);
+		cursoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -66,7 +63,7 @@ public class CursoResource {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Curso> update(@PathVariable Integer id, @RequestBody Curso c  ){
 		
-		c = servico.update(id, c);
+		c = cursoService.update(id, c);
 		
 		return ResponseEntity.ok().body(c);
 	}

@@ -12,8 +12,6 @@ import br.edu.ifgoias.academico.repositories.CursoRepository;
 
 @Service
 public class CursoService {
-
-	
 	
 	@Autowired
 	private CursoRepository cursoRep;

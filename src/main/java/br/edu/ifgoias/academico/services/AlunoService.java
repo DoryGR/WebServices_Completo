@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,8 +29,9 @@ public class AlunoService {
 		return alunoRep.save(obj);
 	}
 
-	public void delete(Integer id) {
+	public ResponseEntity<Void> delete(Integer id) {
 		alunoRep.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	public Aluno update(Integer id, Aluno obj_alterado) {

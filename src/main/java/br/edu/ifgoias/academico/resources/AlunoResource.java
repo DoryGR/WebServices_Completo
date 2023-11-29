@@ -22,15 +22,16 @@ import br.edu.ifgoias.academico.services.AlunoService;
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(value = "/alunos")
+
 public class AlunoResource {
 
 	@Autowired
-	private AlunoService servico;
+    private AlunoService alunoService;
 
 	@GetMapping
 	public ResponseEntity<List<Aluno>> findAll() {
 
-		List<Aluno> alunos = servico.findAll();
+		List<Aluno> alunos = alunoService.findAll();
 
 		return ResponseEntity.ok().body(alunos);
 
@@ -39,25 +40,22 @@ public class AlunoResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Aluno> findById(@PathVariable Integer id) {
 
-		Aluno aluno = servico.findById(id);
+		Aluno aluno = alunoService.findById(id);
 
 		return ResponseEntity.ok().body(aluno);
 	}
 
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Aluno> insert(@RequestBody Aluno a) {
-
-		a = servico.insert(a);
-
-		return ResponseEntity.ok().body(a);
-
-	}
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Aluno> insert(@RequestBody Aluno aluno) {
+        Aluno createdAluno = alunoService.insert(aluno);
+        return new ResponseEntity<>(createdAluno, HttpStatus.CREATED);
+    }
 
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		servico.delete(id);
+		alunoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -66,7 +64,7 @@ public class AlunoResource {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Aluno> update(@PathVariable Integer id, @RequestBody Aluno a) {
 
-		a = servico.update(id, a);
+		a = alunoService.update(id, a);
 
 		return ResponseEntity.ok().body(a);
 	}
