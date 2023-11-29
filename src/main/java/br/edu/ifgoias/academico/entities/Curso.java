@@ -65,9 +65,8 @@ public class Curso implements Serializable {
 	}
 	
 	public void removeAluno (Aluno a) {
-		
 		if (this.alunos.contains(a)) {
-			this.removeAluno(a);
+			this.alunos.remove(a);
 			a.setCurso(null);
 		}
 	}
