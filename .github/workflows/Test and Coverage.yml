@@ -12,8 +12,6 @@ on:
       - edited
     branches:
       - main
-      - develop
-      - master
 
 jobs:
   build:
