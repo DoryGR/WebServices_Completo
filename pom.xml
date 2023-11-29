@@ -60,27 +60,12 @@
 		</dependency>
 	</dependencies>
 
-<<<<<<< HEAD
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.6</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-=======
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -88,13 +73,11 @@
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
->>>>>>> 2345d6e3b99df801aae351dbf5a5ccd4e98018b8
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
-<<<<<<< HEAD
 						<id>default-report</id>
 						<phase>prepare-package</phase>
 						<goals>
@@ -103,22 +86,20 @@
 					</execution>
 					<execution>
 						<id>default-check</id>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>check</goal>
 						</goals>
-=======
-						<id>report</id>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<formats>
-								<format>XML</format>
-							</formats>
-						</configuration>
->>>>>>> 2345d6e3b99df801aae351dbf5a5ccd4e98018b8
+					</execution>
+					<execution>
+						<id>execution-id</id>
 					</execution>
 				</executions>
+				<configuration>
+					<formats>
+						<format>XML</format>
+					</formats>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
