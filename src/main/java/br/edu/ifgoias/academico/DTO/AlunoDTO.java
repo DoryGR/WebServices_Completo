@@ -1,34 +1,25 @@
-package br.edu.ifgoias.academico.DTO;
+package br.edu.ifgoias.academico.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Date;
 import java.util.Objects;
 
 public class AlunoDTO {
     private Integer idaluno;
     private String nome;
     private String sexo;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonProperty("dt_nasc")
-    private Date dtNasc;
+    private String dtNasc;
 
-    public AlunoDTO() {
+    
 
-    }
-
-    public AlunoDTO(Integer idaluno, String nome, String sexo, Date dtNasc) {
+    public AlunoDTO(Integer idaluno, String nome, String sexo, String dtNasc) {
         this.idaluno = idaluno;
         this.nome = nome;
         this.sexo = sexo;
-        this.dtNasc = new Date(dtNasc.getTime());
-    }
-
-    public AlunoDTO(String nome, String sexo, Date dtNasc) {
-        this.nome = nome;
-        this.sexo = sexo;
-        this.dtNasc = new Date(dtNasc.getTime());
+        this.dtNasc = dtNasc;
     }
 
     public Integer getIdaluno() {
@@ -43,16 +34,14 @@ public class AlunoDTO {
         return sexo;
     }
 
-    public Date getDtNasc() {
-        return new Date(dtNasc.getTime());
+    public String getDtNasc() {
+        return dtNasc;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (o == null || getClass() != o.getClass()) return false;
-
         AlunoDTO alunoDTO = (AlunoDTO) o;
         return Objects.equals(idaluno, alunoDTO.idaluno) &&
                 Objects.equals(nome, alunoDTO.nome) &&
@@ -65,4 +54,13 @@ public class AlunoDTO {
         return Objects.hash(idaluno, nome, sexo, dtNasc);
     }
 
+    @Override
+    public String toString() {
+        return "AlunoDTO{" +
+                "idaluno=" + idaluno +
+                ", nome='" + nome + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", dtNasc='" + dtNasc + '\'' +
+                '}';
+    }
 }

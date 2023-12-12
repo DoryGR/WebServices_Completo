@@ -45,9 +45,6 @@ public class Aluno implements Serializable {
 		this.dt_nasc = of;
 	}
 
-    public Aluno(int id, String joão, String masculino, LocalDate of) {
-    }
-
     public Integer getIdaluno() {
 		return idaluno;
 	}

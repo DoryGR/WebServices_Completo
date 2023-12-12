@@ -1,23 +1,52 @@
 package br.edu.ifgoias.academico.DTO;
 
+import br.edu.ifgoias.academico.dto.CursoDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CursoDTOTest {
+class CursoDTOTest {
 
     @Test
-    public void testEqualsAndHashCode() {
-        CursoDTO cursoDTO1 = new CursoDTO(1, "Engenharia de Software");
-        CursoDTO cursoDTO2 = new CursoDTO(1, "Engenharia de Software");
-        CursoDTO cursoDTO3 = new CursoDTO(2, "Ciência da Computação");
+    void testEquals() {
+        CursoDTO cursoDTO1 = new CursoDTO(1, "Ciência da Computação");
+        CursoDTO cursoDTO2 = new CursoDTO(1, "Ciência da Computação");
+        CursoDTO cursoDTO3 = new CursoDTO(2, "Engenharia Elétrica");
 
-        assertTrue(cursoDTO1.equals(cursoDTO2));
-        assertFalse(cursoDTO1.equals(cursoDTO3));
+        assertEquals(cursoDTO1, cursoDTO2);
+        assertNotEquals(cursoDTO1, cursoDTO3);
+    }
+
+    @Test
+    void testHashCode() {
+        CursoDTO cursoDTO1 = new CursoDTO(1, "Ciência da Computação");
+        CursoDTO cursoDTO2 = new CursoDTO(1, "Ciência da Computação");
+        CursoDTO cursoDTO3 = new CursoDTO(2, "Engenharia Elétrica");
 
         assertEquals(cursoDTO1.hashCode(), cursoDTO2.hashCode());
         assertNotEquals(cursoDTO1.hashCode(), cursoDTO3.hashCode());
     }
 
-}
+    @Test
+    void testGetters() {
+        CursoDTO cursoDTO = new CursoDTO(1, "Ciência da Computação");
 
+        assertEquals(1, cursoDTO.getIdcurso());
+        assertEquals("Ciência da Computação", cursoDTO.getNomecurso());
+    }
+
+    @Test
+    void testSetNomecurso() {
+        CursoDTO cursoDTO = new CursoDTO(1, "Ciência da Computação");
+        cursoDTO.setNomecurso("Engenharia de Software");
+
+        assertEquals("Engenharia de Software", cursoDTO.getNomecurso());
+    }
+
+    @Test
+    void testToString() {
+        CursoDTO cursoDTO = new CursoDTO(1, "Ciência da Computação");
+
+        assertEquals("CursoDTO{idcurso=1, nomecurso='Ciência da Computação'}", cursoDTO.toString());
+    }
+}

@@ -1,103 +1,110 @@
 package br.edu.ifgoias.academico.resources;
 
-import br.edu.ifgoias.academico.entities.Aluno;
+import br.edu.ifgoias.academico.dto.AlunoDTO;
 import br.edu.ifgoias.academico.services.AlunoService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+
+
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-class AlunoResourceTest {
+@WebMvcTest(AlunoResource.class)
+public class AlunoResourceTest {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private AlunoService alunoService;
 
-    @InjectMocks
-    private AlunoResource alunoResource;
+    @Test
+    public void testFindAll() throws Exception {
+        AlunoDTO aluno1 = new AlunoDTO(1, "João", "Masculino", "1990-01-01");
+        AlunoDTO aluno2 = new AlunoDTO(2, "Maria", "Feminino", "1995-05-05");
+        List<AlunoDTO> alunos = Arrays.asList(aluno1, aluno2);
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+        when(alunoService.findAllDTO()).thenReturn(alunos);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/alunos")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(alunos.size()));
     }
 
     @Test
-    void testFindAll() {
-        List<Aluno> alunos = new ArrayList<>();
-        alunos.add(new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1)));
-        alunos.add(new Aluno(2, "Maria", "Feminino", LocalDate.of(2001, 2, 2)));
+    public void testFindById() throws Exception {
+        AlunoDTO aluno = new AlunoDTO(1, "Joao", "Masculino", "1990-01-01");
 
-        when(alunoService.findAll()).thenReturn(alunos);
+        when(alunoService.findByIdDTO(1)).thenReturn(aluno);
 
-        ResponseEntity<List<Aluno>> response = alunoResource.findAll();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/alunos/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(alunos, response.getBody());
-
-        verify(alunoService, times(1)).findAll();
-        verifyNoMoreInteractions(alunoService);
+        String jsonResponse = result.getResponse().getContentAsString();
+        assertThat(jsonResponse, containsString("\"idaluno\":" + aluno.getIdaluno()));
+        assertThat(jsonResponse, containsString("\"nome\":\"" + aluno.getNome() + "\""));
+        assertThat(jsonResponse, containsString("\"sexo\":\"" + aluno.getSexo() + "\""));
+        assertThat(jsonResponse, containsString("\"dt_nasc\":\"" + aluno.getDtNasc() + "\""));
     }
 
     @Test
-    void testFindById() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
+    public void testInsert() throws Exception {
+        AlunoDTO alunoDTO = new AlunoDTO(null, "Carlos", "Masculino", "1998-08-08");
 
-        when(alunoService.findById(1)).thenReturn(aluno);
+        when(alunoService.insertDTO(alunoDTO)).thenReturn(alunoDTO);
 
-        ResponseEntity<Aluno> response = alunoResource.findById(1);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/alunos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"nome\": \"Carlos\", \"sexo\": \"Masculino\", \"dt_nasc\": \"1998-08-08\" }"))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(aluno, response.getBody());
+        String jsonResponse = result.getResponse().getContentAsString();
+        assertThat(jsonResponse, containsString("\"nome\":\"" + alunoDTO.getNome() + "\""));
+        assertThat(jsonResponse, containsString("\"sexo\":\"" + alunoDTO.getSexo() + "\""));
+        assertThat(jsonResponse, containsString("\"dt_nasc\":\"" + alunoDTO.getDtNasc() + "\""));
 
-        verify(alunoService, times(1)).findById(1);
-        verifyNoMoreInteractions(alunoService);
     }
+
+@Test
+    public void testUpdate() throws Exception {
+        AlunoDTO alunoDTO = new AlunoDTO(null, "Carlos", "Masculino", "1998-08-08");
+
+        when(alunoService.updateDTO(1, alunoDTO)).thenReturn(alunoDTO);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/alunos/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"nome\": \"Carlos\", \"sexo\": \"Masculino\", \"dt_nasc\": \"1998-08-08\" }"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString();
+        assertThat(jsonResponse, containsString("\"nome\":\"" + alunoDTO.getNome() + "\""));
+        assertThat(jsonResponse, containsString("\"sexo\":\"" + alunoDTO.getSexo() + "\""));
+        assertThat(jsonResponse, containsString("\"dt_nasc\":\"" + alunoDTO.getDtNasc() + "\""));
+
+    }
+
 
     @Test
-    void testInsert() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
-
-        when(alunoService.insert(aluno)).thenReturn(aluno);
-
-        ResponseEntity<Aluno> response = alunoResource.insert(aluno);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(aluno, response.getBody());
-
-        verify(alunoService, times(1)).insert(aluno);
-        verifyNoMoreInteractions(alunoService);
+    public void testDelete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/alunos/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
-    @Test
-    void testDelete() {
-        ResponseEntity<Void> response = alunoResource.delete(1);
-
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-
-        verify(alunoService, times(1)).delete(1);
-        verifyNoMoreInteractions(alunoService);
-    }
-
-    @Test
-    void testUpdate() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
-
-        when(alunoService.update(1, aluno)).thenReturn(aluno);
-
-        ResponseEntity<Aluno> response = alunoResource.update(1, aluno);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(aluno, response.getBody());
-
-        verify(alunoService, times(1)).update(1, aluno);
-        verifyNoMoreInteractions(alunoService);
-    }
 }

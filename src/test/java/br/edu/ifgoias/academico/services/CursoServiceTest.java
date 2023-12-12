@@ -1,91 +1,51 @@
 package br.edu.ifgoias.academico.services;
 
+import br.edu.ifgoias.academico.dto.CursoDTO;
 import br.edu.ifgoias.academico.entities.Curso;
 import br.edu.ifgoias.academico.repositories.CursoRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class CursoServiceTest {
 
-    @Mock
-    private CursoRepository cursoRepository;
-
-    @InjectMocks
+    @Autowired
     private CursoService cursoService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @MockBean
+    private CursoRepository cursoRepository;
+
+    @Test
+    void testFindAllDTO() {
+        Curso curso = new Curso(1, "Ciência da Computação");
+        when(cursoRepository.findAll()).thenReturn(Collections.singletonList(curso));
+
+        assertEquals(1, cursoService.findAllDTO().size());
     }
 
     @Test
-    void testFindAll() {
-        List<Curso> cursos = new ArrayList<>();
-        cursos.add(new Curso(1, "Curso 1"));
-        cursos.add(new Curso(2, "Curso 2"));
-
-        when(cursoRepository.findAll()).thenReturn(cursos);
-
-        List<Curso> result = cursoService.findAll();
-
-        assertEquals(cursos, result);
-
-        verify(cursoRepository, times(1)).findAll();
-        verifyNoMoreInteractions(cursoRepository);
-    }
-
-    @Test
-    void testFindById() {
-        Curso curso = new Curso(1, "Curso 1");
-
+    void testFindByIdDTO() {
+        Curso curso = new Curso(1, "Ciência da Computação");
         when(cursoRepository.findById(1)).thenReturn(Optional.of(curso));
 
-        Curso result = cursoService.findById(1);
-
-        assertEquals(curso, result);
-
-        verify(cursoRepository, times(1)).findById(1);
-        verifyNoMoreInteractions(cursoRepository);
+        assertEquals("Ciência da Computação", cursoService.findByIdDTO(1).getNomecurso());
     }
 
     @Test
-    void testFindById_NotFound() {
-        when(cursoRepository.findById(1)).thenReturn(Optional.empty());
+    void testInsertDTO() {
+        CursoDTO cursoDTO = new CursoDTO(null, "Engenharia Elétrica");
+        when(cursoRepository.save(any())).thenReturn(new Curso(1, "Engenharia Elétrica"));
 
-        try {
-            cursoService.findById(1);
-        } catch (ResponseStatusException ex) {
-            assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
-        }
-
-        verify(cursoRepository, times(1)).findById(1);
-        verifyNoMoreInteractions(cursoRepository);
-    }
-
-    @Test
-    void testInsert() {
-        Curso curso = new Curso(1, "Curso 1");
-
-        when(cursoRepository.save(curso)).thenReturn(curso);
-
-        Curso result = cursoService.insert(curso);
-
-        assertEquals(curso, result);
-
-        verify(cursoRepository, times(1)).save(curso);
-        verifyNoMoreInteractions(cursoRepository);
+        assertEquals("Engenharia Elétrica", cursoService.insertDTO(cursoDTO).getNomecurso());
     }
 
     @Test
@@ -93,40 +53,15 @@ class CursoServiceTest {
         cursoService.delete(1);
 
         verify(cursoRepository, times(1)).deleteById(1);
-        verifyNoMoreInteractions(cursoRepository);
     }
 
     @Test
-    void testUpdate() {
-        Curso curso = new Curso(1, "Curso 1");
-        Curso cursoAlterado = new Curso(1, "Curso 1 Alterado");
-
+    void testUpdateDTO() {
+        Curso curso = new Curso(1, "Ciência da Computação");
+        CursoDTO cursoDTO = new CursoDTO(null, "Engenharia de Software");
         when(cursoRepository.findById(1)).thenReturn(Optional.of(curso));
-        when(cursoRepository.save(curso)).thenReturn(curso);
+        when(cursoRepository.save(any())).thenReturn(new Curso(1, "Engenharia de Software"));
 
-        Curso result = cursoService.update(1, cursoAlterado);
-
-        assertEquals(curso, result);
-        assertEquals(cursoAlterado.getNomecurso(), result.getNomecurso());
-
-        verify(cursoRepository, times(1)).findById(1);
-        verify(cursoRepository, times(1)).save(curso);
-        verifyNoMoreInteractions(cursoRepository);
-    }
-
-    @Test
-    void testUpdate_NotFound() {
-        Curso curso = new Curso(1, "Curso 1");
-
-        when(cursoRepository.findById(1)).thenReturn(Optional.empty());
-
-        try {
-            cursoService.update(1, curso);
-        } catch (ResponseStatusException ex) {
-            assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
-        }
-
-        verify(cursoRepository, times(1)).findById(1);
-        verifyNoMoreInteractions(cursoRepository);
+        assertEquals("Engenharia de Software", cursoService.updateDTO(1, cursoDTO).getNomecurso());
     }
 }

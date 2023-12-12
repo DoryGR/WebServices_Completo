@@ -1,107 +1,87 @@
 package br.edu.ifgoias.academico.resources;
 
-import br.edu.ifgoias.academico.entities.Curso;
+import br.edu.ifgoias.academico.dto.CursoDTO;
 import br.edu.ifgoias.academico.services.CursoService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-class CursoResourceTest {
+@WebMvcTest(CursoResource.class)
+public class CursoResourceTest {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private CursoService cursoService;
 
-    @InjectMocks
-    private CursoResource cursoResource;
+    @Test
+    public void testFindAll() throws Exception {
+        CursoDTO curso1 = new CursoDTO(1, "Ciências da Computação");
+        CursoDTO curso2 = new CursoDTO(2, "Engenharia Elétrica");
+        List<CursoDTO> cursos = Arrays.asList(curso1, curso2);
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+        when(cursoService.findAllDTO()).thenReturn(cursos);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/cursos")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(cursos.size()));
     }
 
     @Test
-    void testFindAll() {
-        List<Curso> cursos = new ArrayList<>();
-        cursos.add(new Curso(1, "Curso 1"));
-        cursos.add(new Curso(2, "Curso 2"));
+    public void testFindById() throws Exception {
+        CursoDTO curso = new CursoDTO(1, "Ciências da Computação");
 
-        when(cursoService.findAll()).thenReturn(cursos);
+        when(cursoService.findByIdDTO(1)).thenReturn(curso);
 
-        ResponseEntity<List<Curso>> response = cursoResource.findAll();
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(cursos, response.getBody());
-
-        verify(cursoService, times(1)).findAll();
-        verifyNoMoreInteractions(cursoService);
+        mockMvc.perform(MockMvcRequestBuilders.get("/cursos/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.idcurso").value(curso.getIdcurso()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nomecurso").value(curso.getNomecurso()));
     }
 
     @Test
-    void testFindById() {
-        int id = 1;
-        Curso curso = new Curso(id, "Curso 1");
+    public void testInsert() throws Exception {
+        CursoDTO cursoDTO = new CursoDTO(null, "Engenharia Mecânica");
 
-        when(cursoService.findById(id)).thenReturn(curso);
+        when(cursoService.insertDTO(cursoDTO)).thenReturn(cursoDTO);
 
-        ResponseEntity<Curso> response = cursoResource.findById(id);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(curso, response.getBody());
-
-        verify(cursoService, times(1)).findById(id);
-        verifyNoMoreInteractions(cursoService);
+        mockMvc.perform(MockMvcRequestBuilders.post("/cursos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"nomecurso\": \"Engenharia Mecânica\" }"))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nomecurso").value(cursoDTO.getNomecurso()));
     }
 
     @Test
-    void testInsert() {
-        Curso curso = new Curso(1, "Curso 1");
-
-        when(cursoService.insert(curso)).thenReturn(curso);
-
-        ResponseEntity<Curso> response = cursoResource.insert(curso);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(curso, response.getBody());
-
-        verify(cursoService, times(1)).insert(curso);
-        verifyNoMoreInteractions(cursoService);
+    public void testDelete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cursos/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
-    void testDelete() {
-        int id = 1;
+    public void testUpdate() throws Exception {
+        CursoDTO cursoDTO = new CursoDTO(null, "Engenharia Civil");
 
-        ResponseEntity<Void> response = cursoResource.delete(id);
+        when(cursoService.updateDTO(1, cursoDTO)).thenReturn(cursoDTO);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-
-        verify(cursoService, times(1)).delete(id);
-        verifyNoMoreInteractions(cursoService);
-    }
-
-    @Test
-    void testUpdate() {
-        int id = 1;
-        Curso curso = new Curso(id, "Curso 1");
-
-        when(cursoService.update(id, curso)).thenReturn(curso);
-
-        ResponseEntity<Curso> response = cursoResource.update(id, curso);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(curso, response.getBody());
-
-        verify(cursoService, times(1)).update(id, curso);
-        verifyNoMoreInteractions(cursoService);
+        mockMvc.perform(MockMvcRequestBuilders.put("/cursos/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"nomecurso\": \"Engenharia Civil\" }"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nomecurso").value(cursoDTO.getNomecurso()));
     }
 }

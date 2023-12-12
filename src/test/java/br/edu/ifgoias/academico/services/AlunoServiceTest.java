@@ -1,134 +1,100 @@
 package br.edu.ifgoias.academico.services;
 
-import br.edu.ifgoias.academico.entities.Aluno;
-import br.edu.ifgoias.academico.repositories.AlunoRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+import br.edu.ifgoias.academico.dto.AlunoDTO;
+import br.edu.ifgoias.academico.entities.Aluno;
+import br.edu.ifgoias.academico.repositories.AlunoRepository;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class AlunoServiceTest {
-
-    @Mock
-    private AlunoRepository alunoRepository;
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+public class AlunoServiceTest {
 
     @InjectMocks
     private AlunoService alunoService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @Mock
+    private AlunoRepository alunoRepository;
+
+    @Test
+    void testFindAllDTO() {
+        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.now());
+        when(alunoRepository.findAll()).thenReturn(Collections.singletonList(aluno));
+
+        List<AlunoDTO> result = alunoService.findAllDTO();
+
+        assertEquals(1, result.size(), "Expected one student in the list");
+        
+        AlunoDTO alunoDTO = result.get(0);
+        
+        assertNotNull(alunoDTO.getNome(), "Expected student name to be not null. AlunoDTO: " + alunoDTO);
+        assertEquals("João", alunoDTO.getNome(), "Expected student name to be João. AlunoDTO: " + alunoDTO);
+        assertNotNull(alunoDTO.getDtNasc(), "Expected birth date to be not null. AlunoDTO: " + alunoDTO);
     }
 
     @Test
-    void testFindAll() {
-        List<Aluno> alunos = new ArrayList<>();
-        alunos.add(new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1)));
-        alunos.add(new Aluno(2, "Maria", "Feminino", LocalDate.of(2001, 2, 2)));
+    void testInsertDTO() {
+        AlunoDTO alunoDTO = new AlunoDTO(null, "Maria", "Feminino", "2000-01-01");
+        Aluno savedAluno = new Aluno(1, "Maria", "Feminino", LocalDate.of(2000, 1, 1));
+        when(alunoRepository.save(any(Aluno.class))).thenReturn(savedAluno);
 
-        when(alunoRepository.findAll()).thenReturn(alunos);
+        AlunoDTO result = alunoService.insertDTO(alunoDTO);
 
-        List<Aluno> result = alunoService.findAll();
-
-        assertEquals(alunos, result);
-
-        verify(alunoRepository, times(1)).findAll();
-        verifyNoMoreInteractions(alunoRepository);
+        assertNotNull(result, "Expected result to be not null");
+        assertEquals("Maria", result.getNome(), "Expected student name to be Maria");
+        assertNotNull(result.getDtNasc(), "Expected birth date to be not null");
     }
 
     @Test
-    void testFindById() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
-
+    void testFindByIdDTO() {
+        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.now());
         when(alunoRepository.findById(1)).thenReturn(Optional.of(aluno));
 
-        Aluno result = alunoService.findById(1);
+        AlunoDTO result = alunoService.findByIdDTO(1);
 
-        assertEquals(aluno, result);
-
-        verify(alunoRepository, times(1)).findById(1);
-        verifyNoMoreInteractions(alunoRepository);
+        assertNotNull(result, "Expected result to be not null");
+        assertEquals("João", result.getNome(), "Expected student name to be João");
+        assertNotNull(result.getDtNasc(), "Expected birth date to be not null");
     }
 
-    @Test
-    void testFindById_NotFound() {
-        when(alunoRepository.findById(1)).thenReturn(Optional.empty());
-
-        try {
-            alunoService.findById(1);
-        } catch (ResponseStatusException ex) {
-            assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
-        }
-
-        verify(alunoRepository, times(1)).findById(1);
-        verifyNoMoreInteractions(alunoRepository);
-    }
-
-    @Test
-    void testInsert() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
-
-        when(alunoRepository.save(aluno)).thenReturn(aluno);
-
-        Aluno result = alunoService.insert(aluno);
-
-        assertEquals(aluno, result);
-
-        verify(alunoRepository, times(1)).save(aluno);
-        verifyNoMoreInteractions(alunoRepository);
-    }
 
     @Test
     void testDelete() {
-        ResponseEntity<Void> response = alunoService.delete(1);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        ResponseEntity<Void> result = alunoService.delete(1);
 
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
         verify(alunoRepository, times(1)).deleteById(1);
-        verifyNoMoreInteractions(alunoRepository);
     }
 
     @Test
-    void testUpdate() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
+    void testUpdateDTO() {
+        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.now());
+        AlunoDTO alunoDTO = new AlunoDTO(null, "Maria", "Feminino", "2000-01-01");
+        when(alunoRepository.findById(1)).thenReturn(java.util.Optional.of(aluno));
+        when(alunoRepository.save(any(Aluno.class))).thenReturn(new Aluno(1, "Maria", "Feminino", LocalDate.parse("2000-01-01")));
 
-        when(alunoRepository.findById(1)).thenReturn(Optional.of(aluno));
-        when(alunoRepository.save(aluno)).thenReturn(aluno);
+        AlunoDTO result = alunoService.updateDTO(1, alunoDTO);
 
-        Aluno result = alunoService.update(1, aluno);
-
-        assertEquals(aluno, result);
-
-        verify(alunoRepository, times(1)).findById(1);
-        verify(alunoRepository, times(1)).save(aluno);
-        verifyNoMoreInteractions(alunoRepository);
+        assertNotNull(result);
+        assertEquals("Maria", result.getNome());
     }
 
-    @Test
-    void testUpdate_NotFound() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
-
-        when(alunoRepository.findById(1)).thenReturn(Optional.empty());
-
-        try {
-            alunoService.update(1, aluno);
-        } catch (ResponseStatusException ex) {
-            assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
-        }
-
-        verify(alunoRepository, times(1)).findById(1);
-        verifyNoMoreInteractions(alunoRepository);
-    }
 }

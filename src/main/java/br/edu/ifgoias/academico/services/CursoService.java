@@ -1,52 +1,60 @@
 package br.edu.ifgoias.academico.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.edu.ifgoias.academico.dto.CursoDTO;
 import br.edu.ifgoias.academico.entities.Curso;
 import br.edu.ifgoias.academico.repositories.CursoRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CursoService {
-	
-	@Autowired
-	private CursoRepository cursoRep;
-	
-	public List<Curso> findAll(){
-		return cursoRep.findAll();
-	}
-	
-    public CursoService(CursoRepository cursoRep) {
-        this.cursoRep = cursoRep;
-    }
-	
-	public Curso findById(Integer id) {
-		return cursoRep.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND) );	
-	}
-	
-	public Curso insert(Curso obj) {
-		return cursoRep.save(obj);
-	}
-	
-	public void delete(Integer id) {
-		cursoRep.deleteById(id);
-	}
-	
-	public Curso update (Integer id, Curso obj_alterado) {
-		return cursoRep.findById(id).map(
-											cursoDB -> {
-													cursoDB.setNomecurso( obj_alterado.getNomecurso() );
-													return cursoRep.save(cursoDB);
-											}
-									)
-									.orElseThrow( 
-											() -> new ResponseStatusException(HttpStatus.NOT_FOUND) 
-									);
-	}
-	
 
+    @Autowired
+    private CursoRepository cursoRepository;
+
+    public List<CursoDTO> findAllDTO() {
+        List<Curso> cursos = cursoRepository.findAll();
+        return cursos.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public CursoDTO findByIdDTO(Integer id) {
+        Curso curso = cursoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return convertToDTO(curso);
+    }
+
+    public CursoDTO insertDTO(CursoDTO cursoDTO) {
+        Curso curso = convertToEntity(cursoDTO);
+        return convertToDTO(cursoRepository.save(curso));
+    }
+
+    public void delete(Integer id) {
+        cursoRepository.deleteById(id);
+    }
+
+    public CursoDTO updateDTO(Integer id, CursoDTO cursoDTO) {
+        return cursoRepository.findById(id).map(cursoDB -> {
+            cursoDB.setNomecurso(cursoDTO.getNomecurso());
+            return convertToDTO(cursoRepository.save(cursoDB));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    private CursoDTO convertToDTO(Curso curso) {
+        return new CursoDTO(
+                curso.getIdcurso(),
+                curso.getNomecurso()
+        );
+    }
+
+    private Curso convertToEntity(CursoDTO cursoDTO) {
+        return new Curso(
+                cursoDTO.getIdcurso(),
+                cursoDTO.getNomecurso()
+        );
+    }
 }
