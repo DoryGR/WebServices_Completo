@@ -37,3 +37,6 @@ jobs:
 
     - name: Run Tests
       run: mvn test
+
+    - name: SonarCloud Analysis
+      run: mvn sonar:sonar -Dsonar.projectKey=matheusribeiro02_WebServices_Completo -Dsonar.organization=matheusribeiro02 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
