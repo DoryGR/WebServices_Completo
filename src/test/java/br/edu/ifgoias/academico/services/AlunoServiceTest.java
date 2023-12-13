@@ -8,6 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Optional;
 
 import br.edu.ifgoias.academico.dto.AlunoDTO;
@@ -20,7 +22,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -100,13 +105,35 @@ public class AlunoServiceTest {
     @Test
     void testConvertToEntity() {
         AlunoDTO alunoDTO = new AlunoDTO(1, "João", "Masculino", "2000-01-01");
-        
+
         Aluno result = alunoService.convertToEntity(alunoDTO);
 
         assertNotNull(result, "Expected result to be not null");
         assertEquals("João", result.getNome(), "Expected student name to be João");
         assertEquals("Masculino", result.getSexo(), "Expected student gender to be Masculino");
         assertEquals(LocalDate.parse("2000-01-01"), result.getDt_nasc(), "Expected birth date to be 2000-01-01");
+    }
+
+    @Test
+    void testUpdateDTOWithEmptyDtNasc() {
+        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.now());
+        when(alunoRepository.findById(1)).thenReturn(Optional.of(aluno));
+        when(alunoRepository.save(any(Aluno.class))).thenReturn(new Aluno(1, "João", "Masculino", LocalDate.now()));
+
+        AlunoDTO result = alunoService.updateDTO(1, new AlunoDTO(null, "Maria", "Feminino", ""));
+
+        assertNotNull(result);
+        assertEquals("Maria", result.getNome());
+        assertNull(result.getDtNasc());
+    }
+    
+    @Test
+    void testUpdateNonExistentAluno() {
+        when(alunoRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> {
+            alunoService.updateDTO(1, new AlunoDTO(1, "Maria", "Feminino", "2000-01-01"));
+        });
     }
 
 }
