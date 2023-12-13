@@ -127,4 +127,23 @@ class CursoTest {
         assertNotEquals(curso, curso2);
         assertNotEquals(curso.hashCode(), curso2.hashCode());
     }
+    void testBidirectionalRelationship() {
+        Aluno aluno1 = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
+        Aluno aluno2 = new Aluno(2, "Maria", "Feminino", LocalDate.of(1999, 12, 31));
+    
+        curso.addAluno(aluno1);
+        curso.addAluno(aluno2);
+    
+        assertTrue(curso.getAlunos().contains(aluno1));
+        assertTrue(curso.getAlunos().contains(aluno2));
+        assertEquals(curso, aluno1.getCurso());
+        assertEquals(curso, aluno2.getCurso());
+    
+        curso.removeAluno(aluno1);
+    
+        assertFalse(curso.getAlunos().contains(aluno1));
+        assertTrue(curso.getAlunos().contains(aluno2));
+        assertNull(aluno1.getCurso());
+        assertEquals(curso, aluno2.getCurso());
+    }
 }

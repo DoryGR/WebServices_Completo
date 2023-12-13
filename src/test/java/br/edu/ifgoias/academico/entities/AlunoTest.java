@@ -1,27 +1,25 @@
 package br.edu.ifgoias.academico.entities;
 
 import org.junit.jupiter.api.Test;
+
+import br.edu.ifgoias.academico.dto.AlunoDTO;
+
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AlunoTest {
 
     @Test
     void testEquals() {
-        Aluno aluno1 = new Aluno();
-        aluno1.setIdaluno(1);
-        aluno1.setNome("João");
-        aluno1.setSexo("Masculino");
-        aluno1.setDt_nasc(LocalDate.of(2000, 1, 1));
-    
-        Aluno aluno2 = new Aluno();
-        aluno2.setIdaluno(1);
-        aluno2.setNome("João");
-        aluno2.setSexo("Masculino");
-        aluno2.setDt_nasc(LocalDate.of(2000, 1, 1));
-    
-        assertEquals(aluno1, aluno2);
+        AlunoDTO alunoDTO1 = new AlunoDTO(1, "João", "Masculino", "2000-01-01");
+        AlunoDTO alunoDTO2 = new AlunoDTO(1, "João", "Masculino", "2000-01-01");
+        AlunoDTO alunoDTO3 = new AlunoDTO(2, "Maria", "Feminino", "1999-12-31");
+
+        assertEquals(alunoDTO1, alunoDTO2);
+        assertNotEquals(alunoDTO1, alunoDTO3);
     }
 
     @Test
@@ -58,7 +56,6 @@ class AlunoTest {
         assertEquals("Masculino", aluno.getSexo(), "Expected gender to be Masculino");
         assertEquals(LocalDate.of(2000, 1, 1), aluno.getDt_nasc(), "Expected birth date to be 2000-01-01");
 
-        // Test setters
         aluno.setIdaluno(2);
         aluno.setNome("Maria");
         aluno.setSexo("Feminino");
@@ -69,8 +66,31 @@ class AlunoTest {
         assertEquals("Feminino", aluno.getSexo(), "Expected gender to be Feminino");
         assertEquals(LocalDate.of(1999, 12, 31), aluno.getDt_nasc(), "Expected birth date to be 1999-12-31");
 
-        // Test setting dt_nasc to null
         aluno.setDt_nasc(null);
         assertNull(aluno.getDt_nasc(), "Expected birth date to be null after setting to null");
     }
+    @Test
+    void testEqualsDifferentNome() {
+        Aluno aluno1 = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
+        Aluno aluno2 = new Aluno(1, "Maria", "Masculino", LocalDate.of(2000, 1, 1));
+
+        assertNotEquals(aluno1, aluno2);
+    }
+
+    @Test
+    void testEqualsDifferentSexo() {
+        Aluno aluno1 = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
+        Aluno aluno2 = new Aluno(1, "João", "Feminino", LocalDate.of(2000, 1, 1));
+
+        assertNotEquals(aluno1, aluno2);
+    }
+
+    @Test
+    void testEqualsDifferentDtNasc() {
+        Aluno aluno1 = new Aluno(1, "João", "Masculino", LocalDate.of(2000, 1, 1));
+        Aluno aluno2 = new Aluno(1, "João", "Masculino", LocalDate.of(1999, 12, 31));
+
+        assertNotEquals(aluno1, aluno2);
+    }
+
 }

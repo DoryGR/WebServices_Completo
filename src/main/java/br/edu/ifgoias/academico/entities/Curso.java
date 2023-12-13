@@ -31,7 +31,7 @@ public class Curso implements Serializable {
 	private List<Aluno> alunos = new ArrayList<>();
 
 	public Curso() {
-
+		this.alunos = new ArrayList<>();
 	}
 	
 	public Curso(Integer idcurso, String nome) {
