@@ -71,7 +71,7 @@ public class AlunoService {
         );
     }
 
-	private Aluno convertToEntity(AlunoDTO alunoDTO) {
+	public Aluno convertToEntity(AlunoDTO alunoDTO) {
         if (alunoDTO.getDtNasc() != null && !alunoDTO.getDtNasc().isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate dtNasc = LocalDate.parse(alunoDTO.getDtNasc(), formatter);

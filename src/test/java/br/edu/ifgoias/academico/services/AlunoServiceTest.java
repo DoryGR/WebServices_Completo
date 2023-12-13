@@ -97,4 +97,16 @@ public class AlunoServiceTest {
         assertEquals("Maria", result.getNome());
     }
 
+    @Test
+    void testConvertToEntity() {
+        AlunoDTO alunoDTO = new AlunoDTO(1, "João", "Masculino", "2000-01-01");
+        
+        Aluno result = alunoService.convertToEntity(alunoDTO);
+
+        assertNotNull(result, "Expected result to be not null");
+        assertEquals("João", result.getNome(), "Expected student name to be João");
+        assertEquals("Masculino", result.getSexo(), "Expected student gender to be Masculino");
+        assertEquals(LocalDate.parse("2000-01-01"), result.getDt_nasc(), "Expected birth date to be 2000-01-01");
+    }
+
 }
