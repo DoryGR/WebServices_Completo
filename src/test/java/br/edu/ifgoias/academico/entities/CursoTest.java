@@ -82,4 +82,49 @@ class CursoTest {
         String expected = "Curso [idcurso=1, nomecurso=Curso Teste]";
         assertEquals(expected, curso.toString());
     }
+    @Test
+    void testRemoveAlunoFromEmptyList() {
+        curso.removeAluno(aluno);
+        assertFalse(curso.getAlunos().contains(aluno));
+        assertNull(aluno.getCurso());
+    }
+    @Test
+    void testAddAndRemoveMultipleAlunos() {
+        Aluno aluno2 = new Aluno(2, "Maria", "Feminino", LocalDate.of(1999, 12, 31));
+
+        curso.addAluno(aluno);
+        curso.addAluno(aluno2);
+
+        assertTrue(curso.getAlunos().contains(aluno));
+        assertTrue(curso.getAlunos().contains(aluno2));
+        assertEquals(curso, aluno.getCurso());
+        assertEquals(curso, aluno2.getCurso());
+
+        curso.removeAluno(aluno);
+
+        assertFalse(curso.getAlunos().contains(aluno));
+        assertTrue(curso.getAlunos().contains(aluno2));
+        assertNull(aluno.getCurso());
+        assertEquals(curso, aluno2.getCurso());
+    }
+
+    @Test
+    void testAddAlunoBothWays() {
+        Aluno aluno2 = new Aluno(2, "Maria", "Feminino", LocalDate.of(1999, 12, 31));
+
+        curso.addAluno(aluno);
+        curso.addAluno(aluno2);
+
+        assertTrue(curso.getAlunos().contains(aluno));
+        assertTrue(curso.getAlunos().contains(aluno2));
+        assertEquals(curso, aluno.getCurso());
+        assertEquals(curso, aluno2.getCurso());
+    }
+
+    @Test
+    void testNotEquals() {
+        Curso curso2 = new Curso(2, "Outro Curso");
+        assertNotEquals(curso, curso2);
+        assertNotEquals(curso.hashCode(), curso2.hashCode());
+    }
 }

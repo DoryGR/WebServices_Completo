@@ -3,6 +3,7 @@ package br.edu.ifgoias.academico.entities;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class AlunoTest {
 
@@ -43,5 +44,33 @@ class AlunoTest {
         String actual = aluno.toString();
 
         assertEquals(expected, actual);
+    }
+    @Test
+    void testGettersAndSetters() {
+        Aluno aluno = new Aluno();
+        aluno.setIdaluno(1);
+        aluno.setNome("João");
+        aluno.setSexo("Masculino");
+        aluno.setDt_nasc(LocalDate.of(2000, 1, 1));
+
+        assertEquals(1, aluno.getIdaluno(), "Expected ID to be 1");
+        assertEquals("João", aluno.getNome(), "Expected name to be João");
+        assertEquals("Masculino", aluno.getSexo(), "Expected gender to be Masculino");
+        assertEquals(LocalDate.of(2000, 1, 1), aluno.getDt_nasc(), "Expected birth date to be 2000-01-01");
+
+        // Test setters
+        aluno.setIdaluno(2);
+        aluno.setNome("Maria");
+        aluno.setSexo("Feminino");
+        aluno.setDt_nasc(LocalDate.of(1999, 12, 31));
+
+        assertEquals(2, aluno.getIdaluno(), "Expected ID to be 2");
+        assertEquals("Maria", aluno.getNome(), "Expected name to be Maria");
+        assertEquals("Feminino", aluno.getSexo(), "Expected gender to be Feminino");
+        assertEquals(LocalDate.of(1999, 12, 31), aluno.getDt_nasc(), "Expected birth date to be 1999-12-31");
+
+        // Test setting dt_nasc to null
+        aluno.setDt_nasc(null);
+        assertNull(aluno.getDt_nasc(), "Expected birth date to be null after setting to null");
     }
 }

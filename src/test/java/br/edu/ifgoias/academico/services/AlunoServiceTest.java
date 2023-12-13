@@ -126,7 +126,7 @@ public class AlunoServiceTest {
         assertEquals("Maria", result.getNome());
         assertNull(result.getDtNasc());
     }
-    
+
     @Test
     void testUpdateNonExistentAluno() {
         when(alunoRepository.findById(anyInt())).thenReturn(Optional.empty());
@@ -135,5 +135,29 @@ public class AlunoServiceTest {
             alunoService.updateDTO(1, new AlunoDTO(1, "Maria", "Feminino", "2000-01-01"));
         });
     }
+    @Test
+    void testConvertToEntityWithNonNullDtNasc() {
+        AlunoDTO alunoDTO = new AlunoDTO(1, "João", "Masculino", "2000-01-01");
 
+        Aluno result = alunoService.convertToEntity(alunoDTO);
+
+        assertNotNull(result, "Expected result to be not null");
+        assertEquals(1, result.getIdaluno(), "Expected student ID to be 1");
+        assertEquals("João", result.getNome(), "Expected student name to be João");
+        assertEquals("Masculino", result.getSexo(), "Expected student gender to be Masculino");
+        assertEquals(LocalDate.parse("2000-01-01"), result.getDt_nasc(), "Expected birth date to be 2000-01-01");
+    }
+
+    @Test
+    void testConvertToEntityWithNullDtNasc() {
+        AlunoDTO alunoDTO = new AlunoDTO(1, "João", "Masculino", null);
+
+        Aluno result = alunoService.convertToEntity(alunoDTO);
+
+        assertNotNull(result, "Expected result to be not null");
+        assertEquals(1, result.getIdaluno(), "Expected student ID to be 1");
+        assertEquals("João", result.getNome(), "Expected student name to be João");
+        assertEquals("Masculino", result.getSexo(), "Expected student gender to be Masculino");
+        assertNull(result.getDt_nasc(), "Expected birth date to be null");
+    }
 }
