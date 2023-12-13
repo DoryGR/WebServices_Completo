@@ -79,7 +79,6 @@ public class AlunoServiceTest {
         assertNotNull(result.getDtNasc(), "Expected birth date to be not null");
     }
 
-
     @Test
     void testDelete() {
 
@@ -91,15 +90,19 @@ public class AlunoServiceTest {
 
     @Test
     void testUpdateDTO() {
-        Aluno aluno = new Aluno(1, "João", "Masculino", LocalDate.now());
+        Aluno alunoExistente = new Aluno(1, "João", "Masculino", LocalDate.now());
         AlunoDTO alunoDTO = new AlunoDTO(null, "Maria", "Feminino", "2000-01-01");
-        when(alunoRepository.findById(1)).thenReturn(java.util.Optional.of(aluno));
-        when(alunoRepository.save(any(Aluno.class))).thenReturn(new Aluno(1, "Maria", "Feminino", LocalDate.parse("2000-01-01")));
+        when(alunoRepository.findById(1)).thenReturn(Optional.of(alunoExistente));
+        when(alunoRepository.save(any(Aluno.class))).thenAnswer(invocation -> {
+            Aluno alunoAtualizado = invocation.getArgument(0);
+
+            return new Aluno(alunoAtualizado.getIdaluno(), alunoAtualizado.getNome(), alunoAtualizado.getSexo(), alunoAtualizado.getDt_nasc());
+        });
 
         AlunoDTO result = alunoService.updateDTO(1, alunoDTO);
-
         assertNotNull(result);
         assertEquals("Maria", result.getNome());
+        verify(alunoRepository, times(1)).save(any(Aluno.class));
     }
 
     @Test
