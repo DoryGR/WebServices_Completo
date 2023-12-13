@@ -2,6 +2,8 @@ package br.edu.ifgoias.academico.dto;
 
 import org.junit.jupiter.api.Test;
 
+import br.edu.ifgoias.academico.DTO.AlunoDTO;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AlunoDTOTest {

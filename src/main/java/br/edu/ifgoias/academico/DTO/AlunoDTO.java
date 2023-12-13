@@ -1,4 +1,4 @@
-package br.edu.ifgoias.academico.dto;
+package br.edu.ifgoias.academico.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

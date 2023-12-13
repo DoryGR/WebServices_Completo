@@ -1,6 +1,6 @@
 package br.edu.ifgoias.academico.services;
 
-import br.edu.ifgoias.academico.dto.CursoDTO;
+import br.edu.ifgoias.academico.DTO.CursoDTO;
 import br.edu.ifgoias.academico.entities.Curso;
 import br.edu.ifgoias.academico.repositories.CursoRepository;
 import org.junit.jupiter.api.Test;

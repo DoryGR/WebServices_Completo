@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.edu.ifgoias.academico.dto.CursoDTO;
+import br.edu.ifgoias.academico.DTO.CursoDTO;
 import br.edu.ifgoias.academico.entities.Curso;
 import br.edu.ifgoias.academico.repositories.CursoRepository;
 

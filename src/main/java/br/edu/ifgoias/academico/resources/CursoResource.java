@@ -1,6 +1,6 @@
 package br.edu.ifgoias.academico.resources;
 
-import br.edu.ifgoias.academico.dto.CursoDTO;
+import br.edu.ifgoias.academico.DTO.CursoDTO;
 import br.edu.ifgoias.academico.services.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

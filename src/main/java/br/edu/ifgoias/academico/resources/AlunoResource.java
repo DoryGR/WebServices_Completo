@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.edu.ifgoias.academico.dto.AlunoDTO;
+import br.edu.ifgoias.academico.DTO.AlunoDTO;
 import br.edu.ifgoias.academico.services.AlunoService;
 
 @RestController

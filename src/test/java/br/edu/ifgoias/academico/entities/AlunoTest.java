@@ -2,7 +2,7 @@ package br.edu.ifgoias.academico.entities;
 
 import org.junit.jupiter.api.Test;
 
-import br.edu.ifgoias.academico.dto.AlunoDTO;
+import br.edu.ifgoias.academico.DTO.AlunoDTO;
 
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import br.edu.ifgoias.academico.dto.AlunoDTO;
+import br.edu.ifgoias.academico.DTO.AlunoDTO;
 import br.edu.ifgoias.academico.entities.Aluno;
 import br.edu.ifgoias.academico.repositories.AlunoRepository;
 

@@ -1,6 +1,6 @@
 package br.edu.ifgoias.academico.resources;
 
-import br.edu.ifgoias.academico.dto.AlunoDTO;
+import br.edu.ifgoias.academico.DTO.AlunoDTO;
 import br.edu.ifgoias.academico.services.AlunoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

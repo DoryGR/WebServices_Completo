@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.edu.ifgoias.academico.dto.AlunoDTO;
+import br.edu.ifgoias.academico.DTO.AlunoDTO;
 import br.edu.ifgoias.academico.entities.Aluno;
 import br.edu.ifgoias.academico.repositories.AlunoRepository;
 
