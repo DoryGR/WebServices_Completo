@@ -1,6 +1,5 @@
-package br.edu.ifgoias.academico.DTO;
+package br.edu.ifgoias.academico.dto;
 
-import br.edu.ifgoias.academico.dto.AlunoDTO;
 import org.junit.jupiter.api.Test;
 
 
